@@ -17,7 +17,7 @@ app.use(express.json());
 const uri = process.env.DB_URI;
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true, serverApi: ServerApiVersion.v1 });
 
-const tasksCollection = client.db('taskManager').collection('tasks');
+const allTasksCollection = client.db('taskManager').collection('AllTasks');
 
 async function run() {
     try {
@@ -28,3 +28,12 @@ async function run() {
     }
 }
 run();
+
+
+app.get('/', (req, res) => {
+    res.send("Task Manager Server is Running");
+})
+
+app.listen(port, () => {
+    console.log(`Task Manager is running on port ${port}`.cyan.bold);
+})
