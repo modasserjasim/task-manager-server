@@ -36,9 +36,27 @@ app.post('/add-task', async (req, res) => {
         console.log(task);
         res.send({
             status: true,
-            message: `You have successfully added ${req.body.title}!`
+            message: `You have successfully added ${req.body.taskName}!`
         })
     } catch (error) {
+        res.send({
+            status: false,
+            error: error.message
+        })
+    }
+
+})
+
+//get the tasks for specific user
+app.get('/my-tasks', async (req, res) => {
+    try {
+        const tasks = await allTasksCollection.find({ userEmail: req.query.email }).toArray();
+        res.send({
+            status: true,
+            tasks
+        })
+    } catch (error) {
+        console.log(error.name, error.message);
         res.send({
             status: false,
             error: error.message
