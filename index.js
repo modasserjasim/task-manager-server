@@ -29,6 +29,23 @@ async function run() {
 }
 run();
 
+//Insert the task using post method
+app.post('/add-task', async (req, res) => {
+    try {
+        const task = await allTasksCollection.insertOne(req.body);
+        console.log(task);
+        res.send({
+            status: true,
+            message: `You have successfully added ${req.body.title}!`
+        })
+    } catch (error) {
+        res.send({
+            status: false,
+            error: error.message
+        })
+    }
+
+})
 
 app.get('/', (req, res) => {
     res.send("Task Manager Server is Running");
