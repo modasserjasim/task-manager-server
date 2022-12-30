@@ -65,6 +65,33 @@ app.get('/my-tasks', async (req, res) => {
 
 })
 
+//get the advertised products and make sure the product is available
+app.get('/completed-tasks', async (req, res) => {
+    try {
+        const query = {
+            $and: [
+                {
+                    userEmail: req.query.email
+                },
+                {
+                    isTaskCompleted: true
+                },
+
+            ]
+        };
+        const completedTasks = await allTasksCollection.find(query).toArray();
+        res.send({
+            status: true,
+            completedTasks
+        })
+    } catch (error) {
+        res.send({
+            status: false,
+            error: error.message
+        })
+    }
+})
+
 app.get('/', (req, res) => {
     res.send("Task Manager Server is Running");
 })
