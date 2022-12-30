@@ -130,7 +130,7 @@ app.delete('/my-task/:id', async (req, res) => {
 })
 
 //uPDATE THE TASK
-app.patch('/my-task/:id', async (req, res) => {
+app.patch('/update-task/:id', async (req, res) => {
     try {
         const id = req.params.id;
         const taskName = req.body.taskName;
@@ -142,7 +142,6 @@ app.patch('/my-task/:id', async (req, res) => {
                 taskName,
                 taskDescription,
                 taskImg
-
             }
         }
         const result = await allTasksCollection.updateOne(query, updatedDoc);
