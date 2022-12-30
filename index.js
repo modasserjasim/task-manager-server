@@ -92,6 +92,74 @@ app.get('/completed-tasks', async (req, res) => {
     }
 })
 
+//Mark the task as completed
+app.patch('/my-task/:id', async (req, res) => {
+    try {
+        const id = req.params.id;
+        const status = req.body.status;
+        const query = { _id: ObjectId(id) };
+        const updatedDoc = {
+            $set: {
+                isTaskCompleted: status
+            }
+        }
+        const result = await allTasksCollection.updateOne(query, updatedDoc);
+        console.log(result);
+
+        res.send({
+            status: true,
+            message: `The task is marked as ${status ? 'Completed' : 'Available'}`
+        });
+    } catch (error) {
+        res.send({
+            status: false,
+            error: error.message
+        })
+    }
+})
+
+// remove the task
+app.delete('/my-task/:id', async (req, res) => {
+    const id = req.params.id;
+    const query = { _id: ObjectId(id) };
+    const result = await allTasksCollection.deleteOne(query);
+    res.send({
+        status: true,
+        message: 'The task has been deleted'
+    });
+})
+
+//uPDATE THE TASK
+app.patch('/my-task/:id', async (req, res) => {
+    try {
+        const id = req.params.id;
+        const taskName = req.body.taskName;
+        const taskDescription = req.body.taskDescription;
+        const taskImg = req.body.taskImg;
+        const query = { _id: ObjectId(id) };
+        const updatedDoc = {
+            $set: {
+                taskName,
+                taskDescription,
+                taskImg
+
+            }
+        }
+        const result = await allTasksCollection.updateOne(query, updatedDoc);
+        console.log(result);
+
+        res.send({
+            status: true,
+            message: `The task has been updated'}`
+        });
+    } catch (error) {
+        res.send({
+            status: false,
+            error: error.message
+        })
+    }
+})
+
 app.get('/', (req, res) => {
     res.send("Task Manager Server is Running");
 })
